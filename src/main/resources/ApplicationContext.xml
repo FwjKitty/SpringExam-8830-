@@ -25,7 +25,13 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd ">
 	激活@Resource @Autowired JSR 250's@PostConstruct @PreDestory @Required
 	-->
 	<context:annotation-config/>
+	
+	<!-- 请用spring基于@AspecJ aspects的配置支持 -->
 	<aop:aspectj-autoproxy/>
+	<!-- 声明一个切面 -->
+	<bean id="filmAspect" class="aspect.FilmServiceAspect"/>
+	
+	
 	<!-- DispatcherServlet上下文，不需要管理@Controller -->
 	<context:component-scan base-package="controller">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -34,6 +40,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd ">
 	<!-- 自动扫描bean、dao和service包(自动注入) -->
     <context:component-scan base-package="service,service.impl" />
     <context:component-scan base-package="dao,dao.impl" />
+    <context:component-scan base-package="aspect"/>
     
 	<bean id="film" class="model.Film"></bean>
 	<bean id="language" class="model.Language"></bean>
@@ -41,7 +48,6 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd ">
 	<bean id="acStopHandler" class="handler.ACStopHandler"/>
 	
 	<!-- 切面，将事务用在哪些对象上
-	<bean id="filmAspect" class="service.FilmServiceAspect"/>
 	<aop:config>
 		<aop:aspect id="filmAspect" ref="filmSevice">
 			<aop:pointcut id="filmService" expression="execution(* service..*Impl.*(..))" />

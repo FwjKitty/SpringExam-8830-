@@ -40,5 +40,4 @@ public class FilmServiceImpl implements FilmServiceI {
 		boolean flag = filmDao.update(film);
 		return flag;
 	}
-	
 }

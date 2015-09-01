@@ -1,27 +1,20 @@
-package main;
-
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.Test;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import dao.FilmDaoI;
 import model.Film;
 import service.FilmServiceI;
-import service.impl.FilmServiceImpl;
 
-public class AddFilm {
-
-	@Autowired
-	private static FilmServiceI filmService;
+public class test {
 	
-	public static void main(String[] args) {
-		
+	@Test
+	public void testAOP(){
 		ConfigurableApplicationContext ac = new ClassPathXmlApplicationContext("ApplicationContext.xml");
 		ac.start();
-		filmService = ac.getBean("filmService",FilmServiceI.class);
+		
 		Film film = ac.getBean("film",Film.class);
 		System.out.println("请输入电影名称(title)：");
 		Scanner sc = new Scanner(System.in);
@@ -30,13 +23,14 @@ public class AddFilm {
 		film.setDescription(sc.nextLine());
 		System.out.println("请输入语言ID(language_id)：");
 		film.setLanguage_id(sc.nextInt());
+		FilmServiceI filmProxy = ac.getBean("filmProxy",FilmServiceI.class);
 		try {
-			filmService.save(film);
-			//filmService.save(film);
+			filmProxy.save(film);
 		} catch (SQLException e) {
-			System.out.println("==========添加电影失败！");
 			e.printStackTrace();
 		}
 		ac.stop();
+		sc.close();
+		ac.close();
 	}
 }
